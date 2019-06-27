@@ -9,12 +9,12 @@ import (
 )
 
 func main() {
-	github := "github.com"
-	url := "https://github.com/%s"
+	allowed := "github.com"
+	url := "https://" + allowed + "/%s"
 	var record []string
 
 	c := colly.NewCollector(
-		colly.AllowedDomains(github),
+		colly.AllowedDomains(allowed),
 		//colly.CacheDir(""),
 	)
 

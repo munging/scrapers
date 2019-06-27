@@ -9,12 +9,12 @@ import (
 )
 
 func main() {
-	codewars := "www.codewars.com"
-	codewarsurl := "https://www.codewars.com/users/%s"
+	allowed := "www.codewars.com"
+	url := "https://%s/users/%s"
 	var record []string
 
 	c := colly.NewCollector(
-		colly.AllowedDomains(codewars),
+		colly.AllowedDomains(allowed),
 		//colly.CacheDir(""),
 	)
 
@@ -56,6 +56,6 @@ func main() {
 	})
 
 	// Start scraping on https://www.codewars.com
-	c.Visit(fmt.Sprintf(codewarsurl, "Beast"))
+	c.Visit(fmt.Sprintf(url, allowed, "Beast"))
 	fmt.Println(record)
 }

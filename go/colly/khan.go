@@ -8,12 +8,13 @@ import (
 )
 
 func main() {
-	khan := "www.khanacademy.org"
+	allowed := "www.khanacademy.org"
+	url := "https://www.khanacademy.org/profile/%s/"
 
 	// Instantiate default collector
 	c := colly.NewCollector(
 		// Visit only domains: khanacademy.org
-		colly.AllowedDomains(khan),
+		colly.AllowedDomains(allowed),
 	)
 
 	// Before making a request print "Visiting ..."
@@ -36,5 +37,5 @@ func main() {
 
 	})
 	// Start scraping on https://khanacademy.org
-	c.Visit("https://www.khanacademy.org/profile/XSLTGod/")
+	c.Visit(fmt.Sprintf(url, "XSLTGod"))
 }
