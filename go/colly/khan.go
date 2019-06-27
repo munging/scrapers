@@ -9,7 +9,7 @@ import (
 
 func main() {
 	allowed := "www.khanacademy.org"
-	url := "https://www.khanacademy.org/profile/%s/"
+	url := "https://%s/profile/%s/"
 
 	// Instantiate default collector
 	c := colly.NewCollector(
@@ -37,5 +37,5 @@ func main() {
 
 	})
 	// Start scraping on https://khanacademy.org
-	c.Visit(fmt.Sprintf(url, "XSLTGod"))
+	c.Visit(fmt.Sprintf(url, allowed, "XSLTGod"))
 }

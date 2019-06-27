@@ -10,7 +10,7 @@ import (
 
 func main() {
 	allowed := "github.com"
-	url := "https://" + allowed + "/%s"
+	url := "https://%s/%s"
 	var record []string
 
 	c := colly.NewCollector(
@@ -56,6 +56,6 @@ func main() {
 		record = append(record, strings.TrimSpace(e.Text))
 	})
 
-	c.Visit(fmt.Sprintf(url, "jbampton"))
+	c.Visit(fmt.Sprintf(url, allowed, "jbampton"))
 	fmt.Println(record)
 }
