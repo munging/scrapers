@@ -2,8 +2,13 @@
 
 mkdir -p random
 cd random || exit
-# shellcheck disable=SC2004
-frandom=$((RANDOM%307))
+
+
+RANGE=307
+number=$RANDOM
+let "number %= $RANGE"
+
+frandom=$number
 echo $frandom
 # shellcheck disable=SC1073
 curl -O https://raw.githubusercontent.com/fuchsia-programming/fuchsia-programming.github.io/master/assets/images/logos/fuchsia-$(( frandom  )).png
