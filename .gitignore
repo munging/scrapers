@@ -4,3 +4,6 @@
 *.iws
 fql/*.log
 ferret.log
+composer.phar
+shell/logos
+shell/random
