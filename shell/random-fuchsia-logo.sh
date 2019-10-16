@@ -11,10 +11,10 @@ then
   exit 1
 else
   echo "Logo fuchsia-$((frandom)).png found"
-  echo "$OSTYPE"
-  if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    echo "Linux"
-    feh fuchsia-$((frandom)).png
-  fi
+  uname -s
+  #if [ "$OSTYPE" == "linux-gnu" ]; then
+  #  echo "Linux"
+  #  feh fuchsia-$((frandom)).png
+  #fi
   exit 0
 fi
