@@ -2,6 +2,32 @@
 
 version: 2
 jobs:
+  markdown-lint:
+    docker:
+      - image: circleci/ruby:2.5.3-node-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Gemfile.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: 🏗️ Install dependencies
+          command: |
+            gem install bundler
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: 🧹 Run Markdown lint
+          command: |
+            bundle exec mdl .
+
   ruby-lint:
     docker:
       # specify the version you desire here
@@ -82,6 +108,7 @@ workflows:
   version: 2
   build:
     jobs:
+      - markdown-lint
       - ruby-lint
       - shellcheck
       - yaml-lint
