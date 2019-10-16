@@ -3,7 +3,8 @@
 mkdir -p random
 cd random || exit
 frandom=$((RANDOM%307))
-curl -O https://raw.githubusercontent.com/fuchsia-programming/fuchsia-programming.github.io/master/assets/images/logos/fuchsia-$((frandom)).png
+# shellcheck disable=SC1073
+curl -O https://raw.githubusercontent.com/fuchsia-programming/fuchsia-programming.github.io/master/assets/images/logos/fuchsia-$(( frandom  )).png
 
 if [ -f "fuchsia-$frandom" ];
 then
@@ -11,10 +12,9 @@ then
   exit 1
 else
   echo "Logo fuchsia-$((frandom)).png found"
-  uname -s
-  #if [ "$OSTYPE" == "linux-gnu" ]; then
-  #  echo "Linux"
-  #  feh fuchsia-$((frandom)).png
-  #fi
+  if [ "$(uname -s)" == "Linux" ]; then
+     echo "Linux"
+     feh fuchsia-$((frandom)).png
+  fi
   exit 0
 fi
