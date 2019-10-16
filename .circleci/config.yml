@@ -2,6 +2,37 @@
 
 version: 2
 jobs:
+  ruby-lint:
+    docker:
+      # specify the version you desire here
+      - image: circleci/ruby:2.5.3-node-browsers
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Gemfile.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: 🏗️ Install dependencies
+          command: |
+            gem install bundler
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: 🧹 Run Ruby lint
+          command: |
+            bundle exec rubocop
+
   shellcheck:
     docker:
       - image: nlknguyen/alpine-shellcheck:v0.4.6
@@ -12,6 +43,28 @@ jobs:
           command: |
             find . -type f -name '*.sh' | wc -l
             find . -type f -name '*.sh' | xargs shellcheck --external-sources
+
+  yaml-lint:
+    docker:
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      - image: circleci/python:3.7.0
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: 🏗️ Install dependencies
+          command: |
+            sudo apt update
+            sudo pip install yamllint
+      - run:
+          name: 🧹 Run YAML lint
+          command: |
+            yamllint .
 
   random-fuchsia-logo:
     docker:
@@ -29,5 +82,7 @@ workflows:
   version: 2
   build:
     jobs:
+      - ruby-lint
       - shellcheck
+      - yaml-lint
       - random-fuchsia-logo
