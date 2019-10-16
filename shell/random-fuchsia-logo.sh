@@ -14,9 +14,9 @@ then
 else
   ls
   echo "Logo fuchsia-$((frandom)).png found"
-  if [[ "$(uname -s)" == "Linux" ]]; then
-     echo "Linux"
-     feh fuchsia-$((frandom)).png
-  fi
+  #if [[ "$(uname -s)" == "Linux" ]]; then
+  #   echo "Linux"
+  feh fuchsia-$((frandom)).png
+  #fi
   exit 0
 fi
