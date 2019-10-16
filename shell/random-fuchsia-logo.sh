@@ -11,5 +11,8 @@ then
   exit 1
 else
   echo "Logo fuchsia-$((frandom)).png found"
+  if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    feh fuchsia-$((frandom)).png
+  fi
   exit 0
 fi

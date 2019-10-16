@@ -22,6 +22,8 @@ jobs:
       - run:
           name: 🧪 Test the random fuchsia logo shell script
           command: |
+            sudo apt-get update
+            sudo apt-get install feh
             cd shell
             sh ./random-fuchsia-logo.sh || exit 1
 
