@@ -28,6 +28,22 @@ jobs:
           command: |
             bundle exec mdl .
 
+  pylint:
+    docker:
+      - image: circleci/python:3.7.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: 🏗️ Install dependencies
+          command: |
+            sudo apt update
+            sudo pip3 install pylint lxml requests
+      - run:
+          name: 🧹 Run Pylint
+          command: |
+            find python -name "*.py" | xargs pylint
+
   ruby-lint:
     docker:
       # specify the version you desire here
@@ -121,6 +137,7 @@ workflows:
   build:
     jobs:
       - markdown-lint
+      - pylint
       - ruby-lint
       - shellcheck
       - yaml-lint
