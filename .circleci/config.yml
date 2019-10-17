@@ -120,17 +120,22 @@ jobs:
             cd shell
             sh ./random-fuchsia-logo.sh || exit 1
 
-  confucius:
+  shell:
     docker:
       - image: circleci/python:3.7.0
     working_directory: ~/repo
     steps:
       - checkout
       - run:
-          name: Run the Confucius shell script
+          name: 🐚 Print quotes from Brainyquote using shell
           command: |
             cd shell
-            sh ./confucius.sh
+            sh ./brainyquote.sh tennis balls
+      - run:
+          name: 🐚 Print the maximum number of contributions in the last year from a users GitHub profile
+          command: |
+            cd shell
+            sh ./github-max-per-day.sh fabpot
 
 workflows:
   version: 2
@@ -142,4 +147,4 @@ workflows:
       - shellcheck
       - yaml-lint
       - random-fuchsia-logo
-      - confucius
+      - shell
