@@ -108,6 +108,32 @@ jobs:
           command: |
             yamllint .
 
+  go-lint:
+    docker: # run the steps with Docker
+      # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
+      - image: circleci/golang:1.13.3 #
+    # directory where steps are run. Path must conform to the Go Workspace requirements
+    working_directory: /go/src/github.com/fuchsia-programming/scrapers
+
+    steps:
+      - checkout
+      - restore_cache: # restores saved cache if no changes are detected since last run
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          keys:
+            - v1-pkg-cache
+
+      - run: go get -u github.com/mgechev/revive
+      - run:
+          name: 🧹 Run Golang revive lint
+          command: |
+            cd go
+            sh ./check-revive.sh || exit 1
+
+      - save_cache: # Store cache in the /go/pkg directory
+          key: v1-pkg-cache
+          paths:
+            - "/go/pkg"
+
   random-fuchsia-logo:
     docker:
       - image: circleci/python:3.7.0
@@ -141,6 +167,16 @@ jobs:
           command: |
             cd shell
             sh ./github-max-per-day-pcregrep.sh fabpot
+      - run:
+          name: 🐚 Print the maximum number of contributions in the last year from a users GitHub profile using perl
+          command: |
+            cd shell
+            sh ./github-max-per-day-perl.sh fabpot
+      - run:
+          name: 🐚 Print the maximum number of contributions in the last year from a users GitHub profile using awk
+          command: |
+            cd shell
+            sh ./github-max-per-day-awk.sh fabpot
 
 workflows:
   version: 2
@@ -151,5 +187,6 @@ workflows:
       - ruby-lint
       - shellcheck
       - yaml-lint
+      - go-lint
       - random-fuchsia-logo
       - shell

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+sleep 5
 mkdir -p random
 cd random || exit
 frandom=$((RANDOM%307))
