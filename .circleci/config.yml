@@ -132,10 +132,15 @@ jobs:
             cd shell
             sh ./brainyquote.sh tennis balls
       - run:
-          name: 🐚 Print the maximum number of contributions in the last year from a users GitHub profile
+          name: 🐚 Print the maximum number of contributions in the last year from a users GitHub profile using sed
           command: |
             cd shell
-            sh ./github-max-per-day.sh fabpot
+            sh ./github-max-per-day-sed.sh fabpot
+      - run:
+          name: 🐚 Print the maximum number of contributions in the last year from a users GitHub profile using pcregrep
+          command: |
+            cd shell
+            sh ./github-max-per-day-pcregrep.sh fabpot
 
 workflows:
   version: 2
